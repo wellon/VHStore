@@ -14,16 +14,19 @@ namespace VHStore.Models
         [StringLength(255)]
         public string Name { get; set; }
 
+
         public Genre Genre { get; set; }
+
+        [Required]
+        [Display(Name = "Genre")]
         public byte GenreId { get; set; }
 
-        [Display(Name = "Date added")]
         public DateTime DateAdded { get; set; }
 
-        [Display(Name = "Release date")]
+        [Display(Name = "Release Date")]
         public DateTime ReleaseDate { get; set; }
 
-        [Display(Name = "Number in stock")]
+        [Display(Name = "Number in Stock")]
         public byte NumberInStock { get; set; }
     }
 }
