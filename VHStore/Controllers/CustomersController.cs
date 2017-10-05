@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using VHStore.Models;
+using VHStore.ViewModels;
 
 namespace VHStore.Controllers
 {
@@ -22,6 +20,17 @@ namespace VHStore.Controllers
             _context.Dispose();
         }
 
+        public ActionResult New()
+        {
+            var membershipTypes = _context.MembershipTypes.ToList();
+            var viewModel = new NewCustomerViewModel
+            {
+                MembershipTypes = membershipTypes,
+                Customer = new Customer(),
+            };
+            return View(viewModel);
+        }
+
         public ActionResult Index()
         {
             var customers = _context.Customers.Include(c => c.MembershipType).ToList();
@@ -36,6 +45,15 @@ namespace VHStore.Controllers
                 return HttpNotFound();
             }
             return View(customer);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Customers");
         }
     }
 }
