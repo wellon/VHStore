@@ -27,8 +27,7 @@ namespace VHStore.Controllers
         {
             var viewModel = new MovieFormViewModel
             {
-                Genres = _context.Genres.ToList(),
-                Movie = new Movie()
+                Genres = _context.Genres.ToList()
             };
             return View("MoviesForm", viewModel);
         }
@@ -53,8 +52,18 @@ namespace VHStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new MovieFormViewModel(movie)
+                {
+                    Genres = _context.Genres.ToList()
+                };
+
+                return View("MoviesForm", viewModel);
+            }
             if (movie.Id == 0)
             {
                 movie.DateAdded = DateTime.Now;
@@ -82,10 +91,9 @@ namespace VHStore.Controllers
                 return HttpNotFound();
             }
 
-            var viewModel = new MovieFormViewModel
+            var viewModel = new MovieFormViewModel(movie)
             {
-                Genres = _context.Genres.ToList(),
-                Movie = movie
+                Genres = _context.Genres.ToList()
             };
 
             return View("MoviesForm", viewModel);
