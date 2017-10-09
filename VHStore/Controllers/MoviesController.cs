@@ -23,6 +23,7 @@ namespace VHStore.Controllers
             _context.Dispose();
         }
 
+        [Authorize(Roles = RoleNames.CanManageMovies)]
         public ActionResult New()
         {
             var viewModel = new MovieFormViewModel
@@ -34,9 +35,10 @@ namespace VHStore.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(User.IsInRole(RoleNames.CanManageMovies) ? "List" : "ReadOnlyList");
         }
 
+        [Authorize(Roles = RoleNames.CanManageMovies)]
         public ActionResult Details(int id)
         {
             var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
@@ -81,6 +83,7 @@ namespace VHStore.Controllers
             return RedirectToAction("Index", "Movies");
         }
 
+        [Authorize(Roles = RoleNames.CanManageMovies)]
         public ActionResult Edit(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
