@@ -22,6 +22,7 @@ namespace VHStore.Controllers.Api
 
         //POST api/Movie
         [HttpPost]
+        [Authorize(Roles = RoleNames.CanManageMovies)]
         public IHttpActionResult CreateMovie(MovieDto movieDto)
         {
             if (!ModelState.IsValid)
@@ -56,6 +57,7 @@ namespace VHStore.Controllers.Api
 
         //POST api/Movie/1
         [HttpPut]
+        [Authorize(Roles = RoleNames.CanManageMovies)]
         public MovieDto UpdateMovie(int id, MovieDto movieDto)
         {
 
@@ -76,6 +78,7 @@ namespace VHStore.Controllers.Api
 
         //DELETE api/Movie/1
         [HttpDelete]
+        [Authorize(Roles = RoleNames.CanManageMovies)]
         public void DeleteMovie(int id)
         {
             var movieInDb = _context.Movies.SingleOrDefault(c => c.Id == id);

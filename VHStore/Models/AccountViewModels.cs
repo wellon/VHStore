@@ -3,16 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VHStore.Models
 {
-    public class ExternalLoginConfirmationViewModel
-    {
-        [Required]
-        [Display(Name = "Адрес электронной почты")]
-        public string Email { get; set; }
-
-        [Required]
-        [Display(Name = "Driving license")]
-        public string DrivingLicense { get; set; }
-    }
 
     public class ExternalLoginListViewModel
     {
@@ -87,6 +77,12 @@ namespace VHStore.Models
         [Required]
         [Display(Name = "Driving License")]
         public string DrivingLicense { get; set; }
+
+        [Required]
+        [Phone]
+        [StringLength(50)]
+        [Display(Name = "Phone")]
+        public string Phone { get; set; }
     }
 
     public class ResetPasswordViewModel
