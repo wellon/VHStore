@@ -14,7 +14,7 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <p class="text-info">
         Вы успешно прошли проверку подлинности через <strong>@ViewBag.LoginProvider</strong>
-            Введите имя пользователя на этом сайте ниже и нажмите кнопку "Зарегистрировать", чтобы завершить
+            Введите имя пользователя и Driver License на этом сайте ниже и нажмите кнопку "Зарегистрировать", чтобы завершить
             вход.
     </p>
     <div class="form-group">
@@ -22,6 +22,13 @@
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DrivingLicense, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.DrivingLicense, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DrivingLicense, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">

@@ -8,6 +8,10 @@ namespace VHStore.Models
         [Required]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Driving license")]
+        public string DrivingLicense { get; set; }
     }
 
     public class ExternalLoginListViewModel
