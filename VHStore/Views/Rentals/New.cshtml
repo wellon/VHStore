@@ -10,14 +10,14 @@
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input id="customer" type="text" value="" class="form-control" />
+            <input id="customer" name="customer" data-rule-validCustomer="true" required type="text" value="" class="form-control" />
         </div>
     </div>
 
     <div class="form-group">
         <label>Movie</label>
         <div class="tt-container">
-            <input id="movie" type="text" value="" class="form-control" />
+            <input id="movie" name="movie" data-rule-atLeastOneMovie="true" required type="text" value="" class="form-control" />
         </div>
     </div>
     
@@ -32,6 +32,7 @@
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function() {
 
@@ -49,15 +50,15 @@
             });
 
             $('#customer').typeahead({
-                minLength: 3,
-                highlight: true
-            },
+                    minLength: 3,
+                    highlight: true
+                },
                 {
                     name: 'customers',
                     display: 'name',
                     source: customers
                 }).on("typeahead:select",
-                function (e, customer) {
+                function(e, customer) {
                     vm.customerId = customer.id;
                 });
 
@@ -72,32 +73,56 @@
             });
 
             $('#movie').typeahead({
-                minLength: 3,
-                highlight: true
-            },{
-                name: 'movies',
-                display: 'name',
-                source: movies
-            }).on("typeahead:select", function (e, movie) {
-                $("#movies").append("<li class='list-group-item'>" + movie.name + "</li>");
-                $("#movie").typeahead("val", "");
-                vm.movieIds.push(movie.id);
+                    minLength: 3,
+                    highlight: true
+                },
+                {
+                    name: 'movies',
+                    display: 'name',
+                    source: movies
+                }).on("typeahead:select",
+                function(e, movie) {
+                    $("#movies").append("<li class='list-group-item'>" + movie.name + "</li>");
+                    $("#movie").typeahead("val", "");
+                    vm.movieIds.push(movie.id);
                 });
 
-            $("#newRental").submit(function(e) {
-                e.preventDefault();
+            $.validator.addMethod("validCustomer",
+                function() {
+                    return vm.customerId && vm.customerId !== 0;
+                },
+                "Please select a valid customer.");
 
-                $.ajax({
-                        url: "/api/NewRentals",
-                        method: "post",
-                        data: vm
-                    })
-                    .done(function() {
-                        toastr.success("Rentals successfully recorded.");
-                    })
-                    .fail(function() {
-                        toastr.error("Something unexpected happened.");
-                    });
+            $.validator.addMethod("atLeastOneMovie",
+                function() {
+                    return vm.movieIds.length > 0;
+                },
+                "Please select at least 1 movie");
+
+            var validator = $("#newRental").validate({
+                submitHandler: function() {
+                    $.ajax({
+                            url: "/api/NewRentals",
+                            method: "post",
+                            data: vm
+                        })
+                        .done(function() {
+                            toastr.success("Rentals successfully recorded.");
+
+                            $("#customer").typeahead("val", "");
+                            $("#movie").typeahead("val", "");
+                            $("#movies").empty();
+
+                            vm = { movieIds: [] };
+
+                            validator.resetForm();
+                        })
+                        .fail(function() {
+                            toastr.error("Something unexpected happened.");
+                        });
+
+                        return false;
+                }
             });
         })
     </script>

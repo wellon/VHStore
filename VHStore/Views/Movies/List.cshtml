@@ -61,6 +61,12 @@
                                     success: function() {
                                         table.row(button.parents("tr")).remove().draw();
                                     }
+                                })
+                                .done(function() {
+                                    toastr.success("Successfully deleted.");
+                                })
+                                .fail(function() {
+                                    toastr.error("Something unexpected happened.");
                                 });
                             }
                         });
