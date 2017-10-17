@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -56,8 +57,8 @@ namespace VHStore
             //   consumerSecret: "");
 
             app.UseFacebookAuthentication(
-                appId: "489071648140787",
-                appSecret: "4e6a4a975bb4fe975213accfbbe5525a");
+                appId: ConfigurationManager.AppSettings["FacebookAppId"],
+                appSecret: ConfigurationManager.AppSettings["FacebookAppSecret"]);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
