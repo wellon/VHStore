@@ -65,7 +65,7 @@ namespace VHStore.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(User.IsInRole(RoleNames.CanManageMovies) ? "List" : "ReadOnlyList");
         }
 
         public ActionResult Details(int id)
